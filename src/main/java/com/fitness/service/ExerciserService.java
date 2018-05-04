@@ -4,6 +4,7 @@ import com.fitness.dto.ExerciserDto;
 import com.fitness.exception.DuplicateException;
 import com.fitness.exception.NotFoundException;
 import com.fitness.model.ExerciserSignUpModel;
+import com.fitness.model.ExerciserUpdateModel;
 import com.fitness.repository.ExerciserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,12 @@ public class ExerciserService {
             throw new NotFoundException(String.format("Exerciser with uuid %s not found", exerciserUuid));
         }
         return id.get(0);
+    }
+
+    @Transactional
+    public void update(UUID exerciserUuid, ExerciserUpdateModel model) throws NotFoundException {
+        Long id = findIdByUuid(exerciserUuid);
+        exerciserRepository.update(model.getFirstName(), model.getLastName(), model.getGender(), id);
     }
 
     private ExerciserDto transform(ExerciserSignUpModel model, UUID uuid) {

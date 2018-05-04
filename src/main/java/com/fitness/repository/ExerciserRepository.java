@@ -44,4 +44,12 @@ public class ExerciserRepository {
     public List<Long> findIdByUuid(UUID uuid) {
         return jdbcTemplate.query("SELECT id FROM exerciser WHERE uuid = ?", new IdRowMapper(), uuid.toString());
     }
+
+    public void update(String firstName, String lastName, Gender gender, Long id) {
+        jdbcTemplate.update("UPDATE exerciser SET first_name = ?, last_name = ?, gender = ? WHERE id = ?",
+            firstName,
+            lastName,
+            gender,
+            id);
+    }
 }
