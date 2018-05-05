@@ -45,11 +45,12 @@ public class ExerciserRepository {
         return jdbcTemplate.query("SELECT id FROM exerciser WHERE uuid = ?", new IdRowMapper(), uuid.toString());
     }
 
-    public void update(String firstName, String lastName, Gender gender, Long id) {
-        jdbcTemplate.update("UPDATE exerciser SET first_name = ?, last_name = ?, gender = ? WHERE id = ?",
+    public void update(String firstName, String lastName, Gender gender, Timestamp updatedAt, Long id) {
+        jdbcTemplate.update("UPDATE exerciser SET first_name = ?, last_name = ?, gender = ?, updated_at = ? WHERE id = ?",
             firstName,
             lastName,
-            gender,
+            gender.toString(),
+            updatedAt,
             id);
     }
 }

@@ -50,7 +50,8 @@ public class ExerciserService {
     @Transactional
     public void update(UUID exerciserUuid, ExerciserUpdateModel model) throws NotFoundException {
         Long id = findIdByUuid(exerciserUuid);
-        exerciserRepository.update(model.getFirstName(), model.getLastName(), model.getGender(), id);
+        Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        exerciserRepository.update(model.getFirstName(), model.getLastName(), model.getGender(), currentTime, id);
     }
 
     private ExerciserDto transform(ExerciserSignUpModel model, UUID uuid) {

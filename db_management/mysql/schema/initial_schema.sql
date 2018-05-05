@@ -19,11 +19,12 @@ CREATE TABLE workout (
   id           BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   exerciser_id BIGINT NOT NULL,
   type         VARCHAR(20) NOT NULL,
-  calories     INT,
-  distance     DOUBLE,
-  duration     INT,
-  created_at   TIMESTAMP,
-  updated_at   TIMESTAMP,
+  calories     INT NULL,
+  distance     DOUBLE NULL,
+  duration     INT NULL,
+  workout_date TIMESTAMP NOT NULL,
+  created_at   TIMESTAMP NOT NULL,
+  updated_at   TIMESTAMP NOT NULL,
   FOREIGN KEY workout_exerciser_id_fk (exerciser_id) REFERENCES exerciser (id)
     ON DELETE CASCADE
 );

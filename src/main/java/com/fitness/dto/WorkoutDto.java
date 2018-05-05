@@ -6,11 +6,33 @@ import java.sql.Timestamp;
  * @author Mark Hychka
  */
 public class WorkoutDto {
+
+    private Long workoutId;
     private String type;
-    private int calories;
-    private double distance;
-    private int duration;
-    private Timestamp createdAt;
+    private Integer calories;
+    private Double distance;
+    private Integer duration;
+    private Timestamp workoutDate;
+
+    public WorkoutDto() {
+    }
+
+    public WorkoutDto(Long workoutId, String type, Integer calories, Double distance, Integer duration, Timestamp workoutDate) {
+        this.workoutId = workoutId;
+        this.type = type;
+        this.calories = calories;
+        this.distance = distance;
+        this.duration = duration;
+        this.workoutDate = workoutDate;
+    }
+
+    public Long getWorkoutId() {
+        return workoutId;
+    }
+
+    public void setWorkoutId(Long workoutId) {
+        this.workoutId = workoutId;
+    }
 
     public String getType() {
         return type;
@@ -20,35 +42,35 @@ public class WorkoutDto {
         this.type = type;
     }
 
-    public int getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 
-    public double getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
+    public Timestamp getWorkoutDate() {
+        return workoutDate;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public void setWorkoutDate(Timestamp workoutDate) {
+        this.workoutDate = workoutDate;
     }
 }
