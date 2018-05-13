@@ -1,11 +1,13 @@
 DROP TABLE IF EXISTS workout;
+DROP TABLE IF EXISTS exerciser_role;
+DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS exerciser;
 
 CREATE TABLE exerciser (
   id              BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   uuid            VARCHAR(36) NOT NULL UNIQUE,
   email           VARCHAR(50) NOT NULL UNIQUE,
-  password        VARCHAR(20) NOT NULL,
+  password        VARCHAR(80) NOT NULL,
   first_name      VARCHAR(30) NOT NULL,
   last_name       VARCHAR(30) NOT NULL,
   gender          VARCHAR(1)  NOT NULL,
@@ -28,3 +30,19 @@ CREATE TABLE workout (
   FOREIGN KEY workout_exerciser_id_fk (exerciser_id) REFERENCES exerciser (id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE role (
+  id   BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(16)
+);
+CREATE TABLE exerciser_role (
+  exerciser_id BIGINT NOT NULL,
+  role_id BIGINT NOT NULL,
+  PRIMARY KEY (exerciser_id, role_id),
+  FOREIGN KEY exerciser_id_fk (exerciser_id) REFERENCES exerciser (id)
+    ON DELETE CASCADE,
+  FOREIGN KEY role_id_fk (role_id) REFERENCES role (id)
+    ON DELETE CASCADE
+);
+INSERT INTO role (name) VALUES ('ROLE_EXERCISER');
+INSERT INTO role (name) VALUES ('ROLE_ADMIN');

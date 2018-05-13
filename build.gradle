@@ -13,7 +13,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:2.0.1.RELEASE")
     compile(
             [group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.0.1.RELEASE'],
-            [group: 'mysql', name: 'mysql-connector-java', version: '5.1.21']
+            [group: 'mysql', name: 'mysql-connector-java', version: '5.1.21'],
+            [group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.1.RELEASE']
     )
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

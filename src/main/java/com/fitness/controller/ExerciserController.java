@@ -9,6 +9,8 @@ import com.fitness.service.ExerciserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,14 +35,20 @@ public class ExerciserController {
     private ExerciserService exerciserService;
 
     @PostMapping(value = "/signUp")
-    public ExerciserDto signUp(@RequestBody @Valid ExerciserSignUpModel exerciserSignUpModel) throws DuplicateException {
+    public ExerciserDto signUp(@RequestBody @Valid ExerciserSignUpModel exerciserSignUpModel) throws DuplicateException, NotFoundException {
         return exerciserService.signUp(exerciserSignUpModel);
+    }
+
+    @PostMapping(value = "/login")
+    public ExerciserDto login() throws NotFoundException {
+        return exerciserService.getExerciserProfile(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @PutMapping(value = "/exerciser/{exerciserUuid}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_EXERCISER')")
     public void update(@PathVariable UUID exerciserUuid,
-                       @RequestBody ExerciserUpdateModel exerciserUpdateModel) throws NotFoundException {
+                       @RequestBody @Valid ExerciserUpdateModel exerciserUpdateModel) throws NotFoundException {
         exerciserService.update(exerciserUuid, exerciserUpdateModel);
     }
 }

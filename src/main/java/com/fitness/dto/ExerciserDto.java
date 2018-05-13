@@ -9,10 +9,10 @@ import java.util.UUID;
  */
 public class ExerciserDto {
 
+    private UUID uuid;
+    private String email;
     private String firstName;
     private String lastName;
-    private String email;
-    private UUID uuid;
     private Gender gender;
 
     public ExerciserDto(String firstName, String lastName, String email, UUID uuid, Gender gender) {
@@ -53,5 +53,13 @@ public class ExerciserDto {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

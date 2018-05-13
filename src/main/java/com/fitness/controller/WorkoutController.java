@@ -7,6 +7,7 @@ import com.fitness.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,12 +33,14 @@ public class WorkoutController {
     private WorkoutService workoutService;
 
     @PostMapping(value = "/exerciser/{exerciserUuid}/workout")
+    @PreAuthorize("hasRole('ROLE_EXERCISER')")
     @ResponseStatus(HttpStatus.OK)
     public void addWorkout(@PathVariable UUID exerciserUuid, @RequestBody WorkoutModel workoutModel) throws NotFoundException {
         workoutService.addWorkout(exerciserUuid, workoutModel);
     }
 
     @PutMapping(value = "/exerciser/{exerciserUuid}/workout/{workoutId}")
+    @PreAuthorize("hasRole('ROLE_EXERCISER')")
     @ResponseStatus(HttpStatus.OK)
     public void updateWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId,
                               @RequestBody WorkoutModel workoutModel) throws NotFoundException {
@@ -45,12 +48,14 @@ public class WorkoutController {
     }
 
     @DeleteMapping(value = "/exerciser/{exerciserUuid}/workout/{workoutId}")
+    @PreAuthorize("hasRole('ROLE_EXERCISER')")
     @ResponseStatus(HttpStatus.OK)
     public void updateWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId) throws NotFoundException {
         workoutService.deleteWorkout(exerciserUuid, workoutId);
     }
 
     @GetMapping(value = "/exerciser/{exerciserUuid}/workouts")
+    @PreAuthorize("hasRole('ROLE_EXERCISER')")
     public List<WorkoutDto> findExerciserWorkouts(@PathVariable UUID exerciserUuid) throws NotFoundException {
         return workoutService.findExerciserWorkouts(exerciserUuid);
     }
