@@ -53,7 +53,11 @@ public class ExerciserRepository {
             id);
     }
 
-    public List<Exerciser> findByEmailAndPassword(String email, String password) {
-        return jdbcTemplate.query("SELECT * FROM exerciser WHERE email = ? AND password = ?", new ExerciserRowMapper(), email, password);
+    public List<Exerciser> findExercisers() {
+        return jdbcTemplate.query("SELECT e.* FROM exerciser e", new ExerciserRowMapper());
+    }
+
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM exerciser WHERE id = ?", id);
     }
 }

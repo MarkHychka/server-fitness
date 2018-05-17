@@ -1,16 +1,18 @@
 package com.fitness.entity;
 
+import com.fitness.RoleType;
+
 /**
  * @author Mark Hychka
  */
 public class Role {
 
     private Long id;
-    private String name;
+    private RoleType type;
 
-    public Role(Long id, String name) {
+    public Role(Long id, RoleType type) {
         this.id = id;
-        this.name = name;
+        this.type = type;
     }
 
     public Long getId() {
@@ -21,11 +23,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public RoleType getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(RoleType type) {
+        this.type = type;
     }
 }

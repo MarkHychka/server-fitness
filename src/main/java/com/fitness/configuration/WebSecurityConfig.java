@@ -8,8 +8,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 /**
  * @author Mark Hychka
@@ -18,14 +18,12 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String SECRET = "fitness";
-
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new StandardPasswordEncoder(SECRET);
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -33,6 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/fitness/signUp").permitAll()
                 .antMatchers("/fitness/login").permitAll()
+                .antMatchers("/fitness").permitAll()
+                .antMatchers("/fitness/signIn").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

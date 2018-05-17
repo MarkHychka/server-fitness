@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.fitness.Role.ROLE_EXERCISER;
+import static com.fitness.RoleType.ROLE_EXERCISER;
 
 /**
  * @author Mark Hychka

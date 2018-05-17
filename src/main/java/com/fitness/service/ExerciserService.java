@@ -4,11 +4,13 @@ import com.fitness.dto.ExerciserDto;
 import com.fitness.entity.Exerciser;
 import com.fitness.exception.DuplicateException;
 import com.fitness.exception.NotFoundException;
+import com.fitness.model.ExerciserSignInModel;
 import com.fitness.model.ExerciserSignUpModel;
 import com.fitness.model.ExerciserUpdateModel;
 import com.fitness.repository.ExerciserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +38,9 @@ public class ExerciserService {
     private RoleService roleService;
 
     @Autowired
+    private WorkoutService workoutService;
+
+    @Autowired
     @Lazy
     private PasswordEncoder passwordEncoder;
 
@@ -53,19 +58,37 @@ public class ExerciserService {
         Long exerciserId = findByUuid(uuid).getId();
         roleService.createExerciserRole(exerciserId);
         List<SimpleGrantedAuthority> authorities = roleService.findRolesByExerciserId(exerciserId).stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getType().toString()))
                 .collect(Collectors.toList());
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(email, encodedPassword, authorities));
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(email, model.getPassword(), authorities));
         return transform(model, uuid);
     }
 
     @Transactional(readOnly = true)
     public Exerciser findByUuid(UUID exerciserUuid) throws NotFoundException {
-        List<Exerciser> id = exerciserRepository.findByUuid(exerciserUuid);
-        if (id.isEmpty()) {
+        List<Exerciser> exerciser = exerciserRepository.findByUuid(exerciserUuid);
+        if (exerciser.isEmpty()) {
             throw new NotFoundException(String.format("Exerciser with uuid %s not found", exerciserUuid));
         }
-        return id.get(0);
+        return exerciser.get(0);
+    }
+
+    @Transactional(readOnly = true)
+    public ExerciserDto signIn(String email, String rawPassword) {
+        List<Exerciser> exerciserList = findByEmail(email);
+        if (exerciserList.isEmpty()) {
+            throw new BadCredentialsException("Exerciser not found");
+        }
+        Exerciser exerciser = exerciserList.get(0);
+        String encodedPassword = exerciser.getPassword();
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new BadCredentialsException("Wrong password");
+        }
+        List<SimpleGrantedAuthority> authorities = roleService.findRolesByExerciserId(exerciser.getId()).stream()
+                .map(role -> new SimpleGrantedAuthority(role.getType().toString()))
+                .collect(Collectors.toList());
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(email, rawPassword, authorities));
+        return transform(exerciser);
     }
 
     @Transactional
@@ -76,8 +99,8 @@ public class ExerciserService {
     }
 
     @Transactional(readOnly = true)
-    public List<Exerciser> findByEmailAndPassword(String email, String password) {
-        return exerciserRepository.findByEmailAndPassword(email, password);
+    public List<Exerciser> findByEmail(String email) {
+        return exerciserRepository.findByEmail(email);
     }
 
     @Transactional(readOnly = true)
@@ -91,5 +114,19 @@ public class ExerciserService {
 
     private ExerciserDto transform(Exerciser exerciser) {
         return new ExerciserDto(exerciser.getFirstName(), exerciser.getLastName(), exerciser.getEmail(), exerciser.getUuid(), exerciser.getGender());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ExerciserDto> showExercisers() {
+        return exerciserRepository.findExercisers().stream()
+                .filter(exerciser -> !roleService.isAdmin(exerciser.getId()))
+                .map(this::transform)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(UUID exerciserUuid) throws NotFoundException {
+        Exerciser exerciser = findByUuid(exerciserUuid);
+        exerciserRepository.delete(exerciser.getId());
     }
 }

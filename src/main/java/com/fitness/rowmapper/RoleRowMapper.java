@@ -1,5 +1,6 @@
 package com.fitness.rowmapper;
 
+import com.fitness.RoleType;
 import com.fitness.entity.Role;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -15,6 +16,6 @@ public class RoleRowMapper implements RowMapper<Role> {
     public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Role(
                 rs.getLong("id"),
-                rs.getString("name"));
+                RoleType.valueOf(rs.getString("name")));
     }
 }

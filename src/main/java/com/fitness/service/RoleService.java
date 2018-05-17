@@ -1,5 +1,6 @@
 package com.fitness.service;
 
+import com.fitness.RoleType;
 import com.fitness.entity.Role;
 import com.fitness.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,12 @@ public class RoleService {
     @Transactional(readOnly = true)
     public Long getExerciserRoleId() {
         return roleRepository.getExerciserRoleId().get(0).getId();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isAdmin(Long exerciserId) {
+        return roleRepository.findRolesByExerciserId(exerciserId).stream()
+                .map(Role::getType)
+                .anyMatch(roleType -> roleType.equals(RoleType.ROLE_ADMIN));
     }
 }

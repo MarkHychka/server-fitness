@@ -33,7 +33,7 @@ CREATE TABLE workout (
 
 CREATE TABLE role (
   id   BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(16)
+  type VARCHAR(16)
 );
 CREATE TABLE exerciser_role (
   exerciser_id BIGINT NOT NULL,
@@ -44,5 +44,13 @@ CREATE TABLE exerciser_role (
   FOREIGN KEY role_id_fk (role_id) REFERENCES role (id)
     ON DELETE CASCADE
 );
+
 INSERT INTO role (name) VALUES ('ROLE_EXERCISER');
 INSERT INTO role (name) VALUES ('ROLE_ADMIN');
+SET @admin_role_id = LAST_INSERT_ID();
+
+INSERT INTO exerciser (uuid, email, password, first_name, last_name, gender, created_at, updated_at, last_login_time)
+VALUES (uuid(), 'admin@fitness.com', '$2a$10$nIvzMXNpB7KgBub/IZ3kyu2.fVf..w5E9Ud0PI0cg5.zRNGhSGnji', 'Fitness', 'Admin', 'M', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+SET @exerciser_id = LAST_INSERT_ID();
+
+INSERT INTO exerciser_role VALUES (@exerciser_id, @admin_role_id);
