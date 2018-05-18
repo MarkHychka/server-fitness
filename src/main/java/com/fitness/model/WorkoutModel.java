@@ -1,5 +1,6 @@
 package com.fitness.model;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -9,6 +10,7 @@ import java.sql.Timestamp;
 public class WorkoutModel {
 
     @NotNull
+    @NotBlank
     private String type;
     private Integer calories;
     private Double distance;

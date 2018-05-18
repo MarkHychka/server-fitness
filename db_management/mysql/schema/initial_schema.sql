@@ -54,3 +54,7 @@ VALUES (uuid(), 'admin@fitness.com', '$2a$10$nIvzMXNpB7KgBub/IZ3kyu2.fVf..w5E9Ud
 SET @exerciser_id = LAST_INSERT_ID();
 
 INSERT INTO exerciser_role VALUES (@exerciser_id, @admin_role_id);
+INSERT INTO workout (exerciser_id, type, calories, distance, duration, workout_date, created_at, updated_at) VALUES
+  (1, 'run', 20, 20, 20, '2017-10-10 10:10:10', '2017-10-10 10:10:10', '2017-10-10 10:10:10'),
+  (1, 'run', 20, 20, 20, '2017-10-10 10:10:10', '2017-10-10 10:10:10', '2017-10-10 10:10:10'),
+  (1, 'run', 20, 20, 20, '2017-10-10 10:10:10', '2017-10-10 10:10:10', '2017-10-10 10:10:10');

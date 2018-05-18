@@ -48,6 +48,10 @@ public class WorkoutRepository {
         jdbcTemplate.update("DELETE FROM workout WHERE id = ?", id);
     }
 
+    public List<WorkoutDto> find(Long id) {
+        return jdbcTemplate.query("SELECT * FROM workout WHERE id = ?", new WorkoutRowMapper(), id);
+    }
+
     public List<WorkoutDto> findByExerciserId(Long exerciserId) {
         return jdbcTemplate.query("SELECT * FROM workout WHERE exerciser_id = ?", new WorkoutRowMapper(), exerciserId);
     }

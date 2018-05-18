@@ -15,20 +15,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -38,6 +38,7 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/fitness")
+@SessionAttributes("exerciserDto")
 @ComponentScan("com.fitness")
 public class ExerciserController {
 
@@ -61,14 +62,35 @@ public class ExerciserController {
         }
         ExerciserDto exerciserDto = exerciserService.signIn(exerciserSignInModel.getEmail(), exerciserSignInModel.getPassword());
         model.addAttribute("exerciserDto", exerciserDto);
-        return "profile";
+        return "redirect:/fitness/profile";
     }
 
-    @PutMapping(value = "/exerciser/{exerciserUuid}")
+    @PostMapping(value = "/register")
+    public String signUp(@ModelAttribute @Valid ExerciserSignUpModel exerciserSignUpModel, BindingResult bindingResult, Model model) throws DuplicateException, NotFoundException {
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
+        ExerciserDto exerciserDto = exerciserService.signUp(exerciserSignUpModel);
+        model.addAttribute("exerciserDto", exerciserDto);
+        return "redirect:/fitness/profile";
+    }
+
+    @PostMapping(value = "/exerciser/{exerciserUuid}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable UUID exerciserUuid,
                        @ModelAttribute @Valid ExerciserUpdateModel exerciserUpdateModel) throws NotFoundException {
         exerciserService.update(exerciserUuid, exerciserUpdateModel);
+    }
+
+    @PostMapping(value = "/exerciser/{exerciserUuid}/profile")
+    public String updateProfile(@PathVariable UUID exerciserUuid,
+                                @ModelAttribute @Valid ExerciserUpdateModel exerciserUpdateModel,
+                                BindingResult bindingResult) throws NotFoundException {
+        if (bindingResult.hasErrors()) {
+            return "profileUpdate";
+        }
+        exerciserService.update(exerciserUuid, exerciserUpdateModel);
+        return "redirect:/fitness/profile";
     }
 
     @PostMapping(value = "/logOut")
@@ -83,7 +105,7 @@ public class ExerciserController {
         return exerciserService.showExercisers();
     }
 
-    @DeleteMapping(value = "/exerciser/{exerciserUuid}")
+    @PostMapping(value = "/exerciser/{exerciserUuid}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public void deleteExerciser(@PathVariable UUID exerciserUuid) throws NotFoundException {

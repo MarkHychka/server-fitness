@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout update</title>
+</head>
+<body>
+<h1>Workout update</h1>
+<form th:action="@{'/fitness/exerciser/' + ${exerciserUuid} + '/workout/' + ${workoutId} + '/update'}" th:object="${workoutModel}" method="POST">
+    <span>Type</span>
+    <div><input type="text" th:field="*{type}"/></div>
+    <div>
+        <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>
+    </div>
+    <span>Calories</span>
+    <div><input type="text" th:field="*{calories}"/></div>
+    <div>
+        <span th:if="${#fields.hasErrors('calories')}" th:errors="*{calories}"></span>
+    </div>
+    <span>Duration</span>
+    <div><input type="text" th:field="*{duration}"/></div>
+    <div>
+        <span th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></span>
+    </div>
+    <span>Distance</span>
+    <div><input type="text" th:field="*{distance}"/></div>
+    <div>
+        <span th:if="${#fields.hasErrors('distance')}" th:errors="*{distance}"></span>
+    </div>
+    <span>Workout Date</span>
+    <div><input type="text" th:field="*{workoutDate}"/></div>
+    <div>
+        <span th:if="${#fields.hasErrors('workoutDate')}" th:errors="*{workoutDate}"></span>
+    </div>
+    <div>
+        <input type="submit" value="Update"/>
+    </div>
+</form>
+</body>
+</html>

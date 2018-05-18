@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/fitness/login").permitAll()
                 .antMatchers("/fitness").permitAll()
                 .antMatchers("/fitness/signIn").permitAll()
+                .antMatchers("/fitness/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

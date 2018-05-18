@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile update</title>
+</head>
+<body>
+<h1>Profile update</h1>
+<form th:action="@{'/fitness/exerciser/' + ${session.exerciserDto.uuid} + '/profile'}" th:object="${exerciserUpdateModel}" method="POST">
+    <span>First Name</span>
+    <div><input type="text" th:field="*{firstName}"/></div>
+    <div>
+        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+    </div>
+    <span>Last Name</span>
+    <div><input type="text" th:field="*{lastName}"/></div>
+    <div>
+        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+    </div>
+    <span>Gender</span>
+    <div>
+        <select th:field="*{gender}">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="Update"/>
+    </div>
+</form>
+
+</body>
+</html>

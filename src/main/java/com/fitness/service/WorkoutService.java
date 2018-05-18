@@ -50,8 +50,23 @@ public class WorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public  List<WorkoutDto> findExerciserWorkouts(UUID exerciserUuid) throws NotFoundException {
+    public  List<WorkoutDto> findExerciserWorkoutsByUuid(UUID exerciserUuid) throws NotFoundException {
         Exerciser exerciser = exerciserService.findByUuid(exerciserUuid);
         return workoutRepository.findByExerciserId(exerciser.getId());
+    }
+
+    @Transactional
+    public WorkoutDto findByWorkoutId(UUID exerciserUuid, Long workoutId) throws NotFoundException {
+        exerciserService.findByUuid(exerciserUuid);
+        List<WorkoutDto> workoutDtos = workoutRepository.find(workoutId);
+        if(workoutDtos.isEmpty()) {
+            throw new NotFoundException(String.format("Workout with id %d not found", workoutId));
+        }
+        return workoutDtos.get(0);
+    }
+
+    @Transactional(readOnly = true)
+    public  List<WorkoutDto> findExerciserWorkoutsById(Long exerciserId) {
+        return workoutRepository.findByExerciserId(exerciserId);
     }
 }

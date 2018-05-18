@@ -1,10 +1,10 @@
 package com.fitness.service;
 
 import com.fitness.dto.ExerciserDto;
+import com.fitness.dto.WorkoutDto;
 import com.fitness.entity.Exerciser;
 import com.fitness.exception.DuplicateException;
 import com.fitness.exception.NotFoundException;
-import com.fitness.model.ExerciserSignInModel;
 import com.fitness.model.ExerciserSignUpModel;
 import com.fitness.model.ExerciserUpdateModel;
 import com.fitness.repository.ExerciserRepository;
@@ -38,9 +38,6 @@ public class ExerciserService {
     private RoleService roleService;
 
     @Autowired
-    private WorkoutService workoutService;
-
-    @Autowired
     @Lazy
     private PasswordEncoder passwordEncoder;
 
@@ -71,6 +68,15 @@ public class ExerciserService {
             throw new NotFoundException(String.format("Exerciser with uuid %s not found", exerciserUuid));
         }
         return exerciser.get(0);
+    }
+
+    @Transactional(readOnly = true)
+    public ExerciserDto findDtoByUuid(UUID exerciserUuid) throws NotFoundException {
+        List<Exerciser> exerciser = exerciserRepository.findByUuid(exerciserUuid);
+        if (exerciser.isEmpty()) {
+            throw new NotFoundException(String.format("Exerciser with uuid %s not found", exerciserUuid));
+        }
+        return transform(exerciser.get(0));
     }
 
     @Transactional(readOnly = true)

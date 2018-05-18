@@ -2,6 +2,7 @@ package com.fitness.dto;
 
 import com.fitness.Gender;
 
+import java.util.List;
 import java.util.UUID;
 
 /**

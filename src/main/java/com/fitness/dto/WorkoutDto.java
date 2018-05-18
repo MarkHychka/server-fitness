@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  */
 public class WorkoutDto {
 
-    private Long workoutId;
+    private Long id;
     private String type;
     private Integer calories;
     private Double distance;
@@ -17,8 +17,8 @@ public class WorkoutDto {
     public WorkoutDto() {
     }
 
-    public WorkoutDto(Long workoutId, String type, Integer calories, Double distance, Integer duration, Timestamp workoutDate) {
-        this.workoutId = workoutId;
+    public WorkoutDto(Long id, String type, Integer calories, Double distance, Integer duration, Timestamp workoutDate) {
+        this.id = id;
         this.type = type;
         this.calories = calories;
         this.distance = distance;
@@ -26,12 +26,12 @@ public class WorkoutDto {
         this.workoutDate = workoutDate;
     }
 
-    public Long getWorkoutId() {
-        return workoutId;
+    public Long getId() {
+        return id;
     }
 
-    public void setWorkoutId(Long workoutId) {
-        this.workoutId = workoutId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getType() {
