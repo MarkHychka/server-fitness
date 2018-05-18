@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -105,10 +106,17 @@ public class ExerciserController {
         return exerciserService.showExercisers();
     }
 
-    @PostMapping(value = "/exerciser/{exerciserUuid}/delete")
+    @DeleteMapping(value = "/exerciser/{exerciserUuid}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public void deleteExerciser(@PathVariable UUID exerciserUuid) throws NotFoundException {
         exerciserService.delete(exerciserUuid);
+    }
+
+    @PostMapping(value = "/exerciser/{exerciserUuid}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteExerciserAndRedirectToExercisers(@PathVariable UUID exerciserUuid) throws NotFoundException {
+        exerciserService.delete(exerciserUuid);
+        return "redirect:/fitness/exercisers/page";
     }
 }

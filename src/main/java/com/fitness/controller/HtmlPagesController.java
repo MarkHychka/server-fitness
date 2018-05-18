@@ -2,12 +2,15 @@ package com.fitness.controller;
 
 import com.fitness.dto.ExerciserDto;
 import com.fitness.dto.WorkoutDto;
+import com.fitness.entity.Exerciser;
+import com.fitness.entity.Role;
 import com.fitness.exception.NotFoundException;
 import com.fitness.model.ExerciserSignInModel;
 import com.fitness.model.ExerciserSignUpModel;
 import com.fitness.model.ExerciserUpdateModel;
 import com.fitness.model.WorkoutModel;
 import com.fitness.service.ExerciserService;
+import com.fitness.service.RoleService;
 import com.fitness.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +36,9 @@ public class HtmlPagesController {
     @Autowired
     private WorkoutService workoutService;
 
+    @Autowired
+    private RoleService roleService;
+
     @GetMapping(value = "/fitness/signIn")
     public String getLoginPage(ExerciserSignInModel exerciserSignInModel) {
         return "signIn";
@@ -53,10 +59,13 @@ public class HtmlPagesController {
         Map<String, Object> map = model.asMap();
         ExerciserDto exerciserDto =(ExerciserDto) map.get("exerciserDto");
         UUID exerciserUuid = exerciserDto.getUuid();
-        ExerciserDto dto = exerciserService.findDtoByUuid(exerciserUuid);
+        Exerciser exerciser = exerciserService.findByUuid(exerciserUuid);
+        ExerciserDto dto = ExerciserService.transform(exerciser);
         List<WorkoutDto> workouts = workoutService.findExerciserWorkoutsByUuid(exerciserUuid);
+        List<Role> roles = roleService.findRolesByExerciserId(exerciser.getId());
         model.addAttribute("exerciserDto", dto);
         model.addAttribute("workouts", workouts);
+        model.addAttribute("roles", roles);
         return "profile";
     }
 
@@ -83,6 +92,13 @@ public class HtmlPagesController {
         model.addAttribute("workoutModel", new WorkoutModel());
         model.addAttribute("exerciserUuid", exerciserUuid);
         return "addWorkout";
+    }
+
+    @GetMapping(value = "/fitness/exercisers/page")
+    public String getExercisersPage(Model model) throws NotFoundException {
+        List<ExerciserDto> exerciserDtos = exerciserService.showExercisers();
+        model.addAttribute("exerciserDtos", exerciserDtos);
+        return "exercisers";
     }
 
     private ExerciserUpdateModel createExerciserUpdateModel(ExerciserDto exerciserDto) {

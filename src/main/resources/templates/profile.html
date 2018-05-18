@@ -52,5 +52,12 @@
         <input type="submit" value="Add workout"/>
     </form>
 </div>
+<div th:each="role : ${roles}">
+    <div th:if="${role.type.name() == 'ROLE_ADMIN'}">
+        <form th:action="@{/fitness/exercisers/page}" method="GET">
+            <input type="submit" value="Show exercisers"/>
+        </form>
+    </div>
+</div>
 </body>
 </html>

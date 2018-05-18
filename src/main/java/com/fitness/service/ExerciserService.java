@@ -71,15 +71,6 @@ public class ExerciserService {
     }
 
     @Transactional(readOnly = true)
-    public ExerciserDto findDtoByUuid(UUID exerciserUuid) throws NotFoundException {
-        List<Exerciser> exerciser = exerciserRepository.findByUuid(exerciserUuid);
-        if (exerciser.isEmpty()) {
-            throw new NotFoundException(String.format("Exerciser with uuid %s not found", exerciserUuid));
-        }
-        return transform(exerciser.get(0));
-    }
-
-    @Transactional(readOnly = true)
     public ExerciserDto signIn(String email, String rawPassword) {
         List<Exerciser> exerciserList = findByEmail(email);
         if (exerciserList.isEmpty()) {
@@ -118,7 +109,7 @@ public class ExerciserService {
         return new ExerciserDto(model.getFirstName(), model.getLastName(), model.getEmail(), uuid, model.getGender());
     }
 
-    private ExerciserDto transform(Exerciser exerciser) {
+    public static ExerciserDto transform(Exerciser exerciser) {
         return new ExerciserDto(exerciser.getFirstName(), exerciser.getLastName(), exerciser.getEmail(), exerciser.getUuid(), exerciser.getGender());
     }
 
@@ -126,7 +117,7 @@ public class ExerciserService {
     public List<ExerciserDto> showExercisers() {
         return exerciserRepository.findExercisers().stream()
                 .filter(exerciser -> !roleService.isAdmin(exerciser.getId()))
-                .map(this::transform)
+                .map(ExerciserService::transform)
                 .collect(Collectors.toList());
     }
 

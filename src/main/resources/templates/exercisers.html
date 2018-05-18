@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercisers</title>
+</head>
+<body>
+<h1>Exercisers</h1>
+<div th:if="${not #lists.isEmpty(exerciserDtos)}">
+    <table>
+        <tr>
+            <td>UUID</td>
+            <td>Email</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Gender</td>
+        </tr>
+        <tr th:each="exerciserDto : ${exerciserDtos}">
+            <td th:text="${exerciserDto.uuid}"></td>
+            <td th:text="${exerciserDto.email}"></td>
+            <td th:text="${exerciserDto.firstName}"></td>
+            <td th:text="${exerciserDto.lastName}"></td>
+            <td th:text="${exerciserDto.gender}"></td>
+            <td>
+                <form th:action="@{'/fitness/exerciser/' + ${exerciserDto.uuid} + '/delete'}" method="POST">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <form th:action="@{/fitness/profile}"
+          method="GET">
+        <input type="submit" value="Profile"/>
+    </form>
+</div>
+</body>
+</html>
