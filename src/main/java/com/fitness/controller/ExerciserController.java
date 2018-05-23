@@ -9,6 +9,7 @@ import com.fitness.model.ExerciserUpdateModel;
 import com.fitness.service.ExerciserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -47,12 +50,12 @@ public class ExerciserController {
     private ExerciserService exerciserService;
 
     @PostMapping(value = "/signUp")
-    public @ResponseBody ExerciserDto signUp(@RequestBody @Valid ExerciserSignUpModel exerciserSignUpModel) throws DuplicateException, NotFoundException {
+    public @ResponseBody ExerciserDto signUp(@ModelAttribute @Valid ExerciserSignUpModel exerciserSignUpModel) throws DuplicateException, NotFoundException {
         return exerciserService.signUp(exerciserSignUpModel);
     }
 
     @PostMapping(value = "/login")
-    public @ResponseBody ExerciserDto login() throws NotFoundException {
+    public @ResponseBody ExerciserDto login(@RequestHeader HttpHeaders headers) throws NotFoundException {
         return exerciserService.getExerciserProfile(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
@@ -76,7 +79,7 @@ public class ExerciserController {
         return "redirect:/fitness/profile";
     }
 
-    @PostMapping(value = "/exerciser/{exerciserUuid}")
+    @PutMapping(value = "/exerciser/{exerciserUuid}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable UUID exerciserUuid,
                        @ModelAttribute @Valid ExerciserUpdateModel exerciserUpdateModel) throws NotFoundException {

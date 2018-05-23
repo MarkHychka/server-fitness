@@ -12,7 +12,7 @@
         <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
     </div>
     <span>Last Name</span>
-    <div><input type="password" th:field="*{lastName}"/></div>
+    <div><input type="text" th:field="*{lastName}"/></div>
     <div>
         <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
     </div>

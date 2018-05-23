@@ -1,7 +1,5 @@
 package com.fitness.dto;
 
-import java.sql.Timestamp;
-
 /**
  * @author Mark Hychka
  */
@@ -12,12 +10,12 @@ public class WorkoutDto {
     private Integer calories;
     private Double distance;
     private Integer duration;
-    private Timestamp workoutDate;
+    private Long workoutDate;
 
     public WorkoutDto() {
     }
 
-    public WorkoutDto(Long id, String type, Integer calories, Double distance, Integer duration, Timestamp workoutDate) {
+    public WorkoutDto(Long id, String type, Integer calories, Double distance, Integer duration, Long workoutDate) {
         this.id = id;
         this.type = type;
         this.calories = calories;
@@ -66,11 +64,11 @@ public class WorkoutDto {
         this.duration = duration;
     }
 
-    public Timestamp getWorkoutDate() {
+    public Long getWorkoutDate() {
         return workoutDate;
     }
 
-    public void setWorkoutDate(Timestamp workoutDate) {
+    public void setWorkoutDate(Long workoutDate) {
         this.workoutDate = workoutDate;
     }
 }

@@ -16,7 +16,7 @@ public class WorkoutModel {
     private Double distance;
     private Integer duration;
     @NotNull
-    private Timestamp workoutDate;
+    private Long workoutDate;
 
     public String getType() {
         return type;
@@ -50,11 +50,11 @@ public class WorkoutModel {
         this.duration = duration;
     }
 
-    public Timestamp getWorkoutDate() {
+    public Long getWorkoutDate() {
         return workoutDate;
     }
 
-    public void setWorkoutDate(Timestamp workoutDate) {
+    public void setWorkoutDate(Long workoutDate) {
         this.workoutDate = workoutDate;
     }
 }

@@ -29,7 +29,7 @@ public class WorkoutService {
         Exerciser exerciser = exerciserService.findByUuid(exerciserUuid);
         Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         workoutRepository.insert(exerciser.getId(), workoutModel.getType(), workoutModel.getCalories(), workoutModel.getDistance(),
-                workoutModel.getDuration(), workoutModel.getWorkoutDate(), currentTime, currentTime);
+                workoutModel.getDuration(), new Timestamp(workoutModel.getWorkoutDate()), currentTime, currentTime);
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class WorkoutService {
             throw new NotFoundException(String.format("Workout with id %d not found", workoutId));
         }
         Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
-        workoutRepository.update(model.getType(), model.getCalories(), model.getDistance(), model.getDuration(), model.getWorkoutDate(), currentTime, workoutId);
+        workoutRepository.update(model.getType(), model.getCalories(), model.getDistance(), model.getDuration(), new Timestamp(model.getWorkoutDate()), currentTime, workoutId);
     }
 
     @Transactional

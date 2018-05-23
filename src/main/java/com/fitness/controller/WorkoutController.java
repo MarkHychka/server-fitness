@@ -37,14 +37,14 @@ public class WorkoutController {
 
     @PostMapping(value = "/exerciser/{exerciserUuid}/workout")
     @ResponseStatus(HttpStatus.OK)
-    public void addWorkout(@PathVariable UUID exerciserUuid, @RequestBody @Valid WorkoutModel workoutModel) throws NotFoundException {
+    public void addWorkout(@PathVariable UUID exerciserUuid, @ModelAttribute @Valid WorkoutModel workoutModel) throws NotFoundException {
         workoutService.addWorkout(exerciserUuid, workoutModel);
     }
 
     @PutMapping(value = "/exerciser/{exerciserUuid}/workout/{workoutId}")
     @ResponseStatus(HttpStatus.OK)
     public void updateWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId,
-                              @RequestBody @Valid WorkoutModel workoutModel) throws NotFoundException {
+                              @ModelAttribute @Valid WorkoutModel workoutModel) throws NotFoundException {
         workoutService.updateWorkout(exerciserUuid, workoutId, workoutModel);
     }
 

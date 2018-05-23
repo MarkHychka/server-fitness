@@ -18,7 +18,7 @@ public class WorkoutRowMapper implements RowMapper<WorkoutDto> {
                 (Integer) rs.getObject("calories"),
                 (Double) rs.getObject("distance"),
                 (Integer) rs.getObject("duration"),
-                rs.getTimestamp("workout_date")
+                rs.getTimestamp("workout_date").getTime()
         );
     }
 }
