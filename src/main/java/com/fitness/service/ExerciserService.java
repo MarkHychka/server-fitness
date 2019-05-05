@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.fitness.Role.ROLE_EXERCISER;
+
 /**
  * @author Mark Hychka
  */
@@ -50,13 +52,17 @@ public class ExerciserService {
         String encodedPassword = passwordEncoder.encode(model.getPassword());
         exerciserRepository.insert(model.getFirstName(), model.getLastName(), model.getEmail(), uuid, model.getGender(),
                 encodedPassword, currentTime, currentTime, currentTime);
-        Long exerciserId = findByUuid(uuid).getId();
-        roleService.createExerciserRole(exerciserId);
+        authenticate(uuid, email, encodedPassword);
+        return transform(model, uuid);
+    }
+
+    private void authenticate(UUID exerciserUuid, String email, String encodedPassword) throws NotFoundException {
+        Long exerciserId = findByUuid(exerciserUuid).getId();
         List<SimpleGrantedAuthority> authorities = roleService.findRolesByExerciserId(exerciserId).stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority(ROLE_EXERCISER.name()));
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(email, encodedPassword, authorities));
-        return transform(model, uuid);
     }
 
     @Transactional(readOnly = true)

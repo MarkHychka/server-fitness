@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.fitness.Role.ROLE_EXERCISER;
+
 /**
  * @author Mark Hychka
  */
@@ -43,6 +45,7 @@ public class EmailPasswordProvider implements AuthenticationProvider {
         List<SimpleGrantedAuthority> authorities = roleService.findRolesByExerciserId(exerciserList.get(0).getId()).stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority(ROLE_EXERCISER.name()));
         return new UsernamePasswordAuthenticationToken(login, password, authorities);
     }
 
