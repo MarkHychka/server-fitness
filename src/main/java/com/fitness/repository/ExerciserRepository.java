@@ -6,6 +6,7 @@ import com.fitness.rowmapper.ExerciserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -21,7 +22,9 @@ public class ExerciserRepository {
     private JdbcTemplate jdbcTemplate;
 
     public List<Exerciser> findByEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM exerciser WHERE email = ?", new ExerciserRowMapper(), email);
+        return jdbcTemplate.query("SELECT * FROM exerciser WHERE email = ?",
+                new ExerciserRowMapper(),
+                email);
     }
 
     public void insert(String firstName, String lastName, String email, UUID uuid, Gender gender, String password,
@@ -40,8 +43,14 @@ public class ExerciserRepository {
                 lastLoginTime);
     }
 
-    public List<Exerciser> findByUuid(UUID uuid) {
-        return jdbcTemplate.query("SELECT * FROM exerciser WHERE uuid = ?", new ExerciserRowMapper(), uuid.toString());
+    public Exerciser findByUuid(UUID uuid) {
+        List<Exerciser> result = jdbcTemplate.query("SELECT * FROM exerciser WHERE uuid = ?",
+                new ExerciserRowMapper(),
+                uuid.toString());
+        if (CollectionUtils.isEmpty(result)) {
+            return null;
+        }
+        return result.get(0);
     }
 
     public void update(String firstName, String lastName, Gender gender, Timestamp updatedAt, Long id) {
@@ -51,9 +60,5 @@ public class ExerciserRepository {
             gender.toString(),
             updatedAt,
             id);
-    }
-
-    public List<Exerciser> findByEmailAndPassword(String email, String password) {
-        return jdbcTemplate.query("SELECT * FROM exerciser WHERE email = ? AND password = ?", new ExerciserRowMapper(), email, password);
     }
 }

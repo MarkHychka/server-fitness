@@ -1,6 +1,8 @@
 package com.fitness.dto;
 
 import com.fitness.Gender;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.UUID;
 
@@ -61,5 +63,10 @@ public class ExerciserDto {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

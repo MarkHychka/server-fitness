@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS workout;
 DROP TABLE IF EXISTS exerciser_role;
 DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS favorite_club;
+DROP TABLE IF EXISTS club;
 DROP TABLE IF EXISTS exerciser;
 
 CREATE TABLE exerciser (
@@ -18,15 +20,15 @@ CREATE TABLE exerciser (
 CREATE INDEX exerciser_uuid_idx
   ON exerciser (uuid);
 CREATE TABLE workout (
-  id           BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  exerciser_id BIGINT NOT NULL,
+  id           BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  exerciser_id BIGINT      NOT NULL,
   type         VARCHAR(20) NOT NULL,
-  calories     INT NULL,
-  distance     DOUBLE NULL,
-  duration     INT NULL,
-  workout_date TIMESTAMP NOT NULL,
-  created_at   TIMESTAMP NOT NULL,
-  updated_at   TIMESTAMP NOT NULL,
+  calories     INT         NULL,
+  distance     DOUBLE      NULL,
+  duration     INT         NULL,
+  workout_date TIMESTAMP   NOT NULL,
+  created_at   TIMESTAMP   NOT NULL,
+  updated_at   TIMESTAMP   NOT NULL,
   FOREIGN KEY workout_exerciser_id_fk (exerciser_id) REFERENCES exerciser (id)
     ON DELETE CASCADE
 );
@@ -37,7 +39,7 @@ CREATE TABLE role (
 );
 CREATE TABLE exerciser_role (
   exerciser_id BIGINT NOT NULL,
-  role_id BIGINT NOT NULL,
+  role_id      BIGINT NOT NULL,
   PRIMARY KEY (exerciser_id, role_id),
   FOREIGN KEY exerciser_id_fk (exerciser_id) REFERENCES exerciser (id)
     ON DELETE CASCADE,
@@ -45,4 +47,22 @@ CREATE TABLE exerciser_role (
     ON DELETE CASCADE
 );
 INSERT INTO role (name) VALUES ('ROLE_EXERCISER');
-INSERT INTO role (name) VALUES ('ROLE_ADMIN');
+
+CREATE TABLE club (
+  id         BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  uuid       VARCHAR(36) NOT NULL UNIQUE,
+  name       VARCHAR(36),
+  latitude   DOUBLE      NOT NULL,
+  longitude  DOUBLE      NOT NULL,
+  created_at TIMESTAMP   NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE favorite_club (
+  exerciser_id BIGINT NOT NULL,
+  club_id      BIGINT NOT NULL,
+  PRIMARY KEY (exerciser_id, club_id),
+  FOREIGN KEY exerciser_id_fk (exerciser_id) REFERENCES exerciser (id)
+    ON DELETE CASCADE,
+  FOREIGN KEY club_id_fk (club_id) REFERENCES club (id)
+    ON DELETE CASCADE
+);

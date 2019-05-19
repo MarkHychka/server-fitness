@@ -37,16 +37,21 @@ public class EmailPasswordProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String login = authentication.getName();
-        String password = passwordEncoder.encode(authentication.getCredentials().toString());
-        List<Exerciser> exerciserList = exerciserService.findByEmailAndPassword(login, password);
+        String rawPassword = authentication.getCredentials().toString();
+        List<Exerciser> exerciserList = exerciserService.findByEmail(login);
         if (exerciserList.isEmpty()) {
             throw new BadCredentialsException("Exerciser not found");
         }
-        List<SimpleGrantedAuthority> authorities = roleService.findRolesByExerciserId(exerciserList.get(0).getId()).stream()
+        Exerciser exerciser = exerciserList.get(0);
+        String encodedPassword = exerciser.getPassword();
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new BadCredentialsException("Wrong password");
+        }
+        List<SimpleGrantedAuthority> authorities = roleService.findRolesByExerciserId(exerciser.getId()).stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
         authorities.add(new SimpleGrantedAuthority(ROLE_EXERCISER.name()));
-        return new UsernamePasswordAuthenticationToken(login, password, authorities);
+        return new UsernamePasswordAuthenticationToken(login, rawPassword, authorities);
     }
 
     @Override

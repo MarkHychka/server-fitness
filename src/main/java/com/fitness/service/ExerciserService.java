@@ -67,11 +67,11 @@ public class ExerciserService {
 
     @Transactional(readOnly = true)
     public Exerciser findByUuid(UUID exerciserUuid) throws NotFoundException {
-        List<Exerciser> id = exerciserRepository.findByUuid(exerciserUuid);
-        if (id.isEmpty()) {
+        Exerciser exerciser = exerciserRepository.findByUuid(exerciserUuid);
+        if (exerciser == null) {
             throw new NotFoundException(String.format("Exerciser with uuid %s not found", exerciserUuid));
         }
-        return id.get(0);
+        return exerciser;
     }
 
     @Transactional
@@ -82,8 +82,8 @@ public class ExerciserService {
     }
 
     @Transactional(readOnly = true)
-    public List<Exerciser> findByEmailAndPassword(String email, String password) {
-        return exerciserRepository.findByEmailAndPassword(email, password);
+    public List<Exerciser> findByEmail(String email) {
+        return exerciserRepository.findByEmail(email);
     }
 
     @Transactional(readOnly = true)

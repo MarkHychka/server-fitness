@@ -1,5 +1,8 @@
 package com.fitness.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -54,5 +57,10 @@ public class WorkoutModel {
 
     public void setWorkoutDate(Timestamp workoutDate) {
         this.workoutDate = workoutDate;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

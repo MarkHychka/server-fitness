@@ -1,10 +1,12 @@
 package com.fitness.repository;
 
 import com.fitness.dto.WorkoutDto;
+import com.fitness.entity.Workout;
 import com.fitness.rowmapper.WorkoutRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -40,15 +42,19 @@ public class WorkoutRepository {
                 workoutId);
     }
 
-    public List<WorkoutDto> findById(Long id) {
-        return jdbcTemplate.query("SELECT * FROM workout WHERE id = ?", new WorkoutRowMapper(), id);
+    public Workout findById(Long id) {
+        List<Workout> result = jdbcTemplate.query("SELECT * FROM workout WHERE id = ?", new WorkoutRowMapper(), id);
+        if (CollectionUtils.isEmpty(result)) {
+            return null;
+        }
+        return result.get(0);
     }
 
     public void delete(Long id) {
         jdbcTemplate.update("DELETE FROM workout WHERE id = ?", id);
     }
 
-    public List<WorkoutDto> findByExerciserId(Long exerciserId) {
+    public List<Workout> findByExerciserId(Long exerciserId) {
         return jdbcTemplate.query("SELECT * FROM workout WHERE exerciser_id = ?", new WorkoutRowMapper(), exerciserId);
     }
 }

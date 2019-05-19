@@ -3,6 +3,7 @@ package com.fitness.rowmapper;
 import com.fitness.Gender;
 import com.fitness.entity.Exerciser;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.UUID;
  */
 public class ExerciserRowMapper implements RowMapper<Exerciser> {
 
+    @Nullable
     @Override
     public Exerciser mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Exerciser(

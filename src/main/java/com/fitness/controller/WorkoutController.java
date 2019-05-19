@@ -5,8 +5,6 @@ import com.fitness.exception.NotFoundException;
 import com.fitness.model.WorkoutModel;
 import com.fitness.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,7 +23,6 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/fitness")
-@ComponentScan("com.fitness")
 public class WorkoutController {
 
     @Autowired
@@ -34,14 +30,12 @@ public class WorkoutController {
 
     @PostMapping(value = "/exerciser/{exerciserUuid}/workout")
     @PreAuthorize("hasRole('ROLE_EXERCISER')")
-    @ResponseStatus(HttpStatus.OK)
     public void addWorkout(@PathVariable UUID exerciserUuid, @RequestBody WorkoutModel workoutModel) throws NotFoundException {
         workoutService.addWorkout(exerciserUuid, workoutModel);
     }
 
     @PutMapping(value = "/exerciser/{exerciserUuid}/workout/{workoutId}")
     @PreAuthorize("hasRole('ROLE_EXERCISER')")
-    @ResponseStatus(HttpStatus.OK)
     public void updateWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId,
                               @RequestBody WorkoutModel workoutModel) throws NotFoundException {
         workoutService.updateWorkout(exerciserUuid, workoutId, workoutModel);
@@ -49,8 +43,7 @@ public class WorkoutController {
 
     @DeleteMapping(value = "/exerciser/{exerciserUuid}/workout/{workoutId}")
     @PreAuthorize("hasRole('ROLE_EXERCISER')")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId) throws NotFoundException {
+    public void deleteWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId) throws NotFoundException {
         workoutService.deleteWorkout(exerciserUuid, workoutId);
     }
 
