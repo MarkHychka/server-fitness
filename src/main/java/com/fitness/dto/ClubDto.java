@@ -14,12 +14,14 @@ public class ClubDto {
     private String name;
     private Double latitude;
     private Double longitude;
+    private boolean isFavorite;
 
-    public ClubDto(UUID uuid, String name, Double latitude, Double longitude) {
+    public ClubDto(UUID uuid, String name, Double latitude, Double longitude, boolean isFavorite) {
         this.uuid = uuid;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.isFavorite = isFavorite;
     }
 
     public UUID getUuid() {
@@ -52,6 +54,14 @@ public class ClubDto {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     @Override

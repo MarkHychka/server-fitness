@@ -46,4 +46,10 @@ public class ClubRepository {
                 exerciserId,
                 clubId);
     }
+
+    public void removeFavorite(Long exerciserId, Long clubId) {
+        jdbcTemplate.update("DELETE FROM favorite_club WHERE exerciser_id = ? AND club_id = ?",
+                exerciserId,
+                clubId);
+    }
 }
