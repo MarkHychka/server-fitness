@@ -23,12 +23,4 @@ public class RoleRepository {
         return jdbcTemplate.query("SELECT r.* FROM role r " +
                 "JOIN exerciser_role er ON er.role_id = r.id WHERE er.exerciser_id = ?", new RoleRowMapper(), exerciserId);
     }
-
-    public void createExerciserRole(Long exerciserId, Long roleId) {
-        jdbcTemplate.update("INSERT INTO exerciser_role VALUES (?, ?)", exerciserId, roleId);
-    }
-
-    public List<Role> getExerciserRoleId() {
-        return jdbcTemplate.query("SELECT * FROM role WHERE name = ?", new RoleRowMapper(), ROLE_EXERCISER.toString());
-    }
 }

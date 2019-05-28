@@ -21,9 +21,4 @@ public class RoleService {
     public List<Role> findRolesByExerciserId(Long exerciserId) {
         return roleRepository.findRolesByExerciserId(exerciserId);
     }
-
-    @Transactional(readOnly = true)
-    public Long getExerciserRoleId() {
-        return roleRepository.getExerciserRoleId().get(0).getId();
-    }
 }
