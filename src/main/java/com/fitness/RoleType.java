@@ -1,5 +1,5 @@
 package com.fitness;
 
-public enum Role {
+public enum RoleType {
     ROLE_EXERCISER
 }

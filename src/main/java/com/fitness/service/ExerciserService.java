@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.fitness.Role.ROLE_EXERCISER;
+import static com.fitness.RoleType.ROLE_EXERCISER;
 
 /**
  * @author Mark Hychka

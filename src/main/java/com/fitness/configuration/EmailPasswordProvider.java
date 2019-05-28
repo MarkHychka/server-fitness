@@ -1,7 +1,6 @@
 package com.fitness.configuration;
 
 import com.fitness.entity.Exerciser;
-import com.fitness.exception.NotFoundException;
 import com.fitness.service.ExerciserService;
 import com.fitness.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.fitness.Role.ROLE_EXERCISER;
+import static com.fitness.RoleType.ROLE_EXERCISER;
 
 /**
  * @author Mark Hychka
