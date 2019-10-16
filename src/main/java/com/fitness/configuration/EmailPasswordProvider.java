@@ -37,11 +37,10 @@ public class EmailPasswordProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String login = authentication.getName();
         String rawPassword = authentication.getCredentials().toString();
-        List<Exerciser> exerciserList = exerciserService.findByEmail(login);
-        if (exerciserList.isEmpty()) {
+        Exerciser exerciser = exerciserService.findByEmail(login);
+        if (exerciser == null) {
             throw new BadCredentialsException("Exerciser not found");
         }
-        Exerciser exerciser = exerciserList.get(0);
         String encodedPassword = exerciser.getPassword();
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new BadCredentialsException("Wrong password");

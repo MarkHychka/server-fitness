@@ -26,19 +26,19 @@ public class ClubController {
     private ClubService clubService;
 
     @GetMapping(value = "/exerciser/{exerciserUuid}/clubs")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @exerciserSecurity.hasPermission(authentication,#exerciserUuid)")
     public List<ClubDto> clubsForExerciser(@PathVariable UUID exerciserUuid) throws NotFoundException {
         return clubService.clubsForExerciser(exerciserUuid);
     }
 
     @PostMapping(value = "/exerciser/{exerciserUuid}/club/{clubUuid}/favorite-club")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @exerciserSecurity.hasPermission(authentication,#exerciserUuid)")
     public void addFavoriteClub(@PathVariable UUID exerciserUuid, @PathVariable UUID clubUuid) throws NotFoundException {
         clubService.addFavoriteClub(exerciserUuid, clubUuid);
     }
 
     @DeleteMapping(value = "/exerciser/{exerciserUuid}/club/{clubUuid}/favorite-club")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @exerciserSecurity.hasPermission(authentication,#exerciserUuid)")
     public void removeFavoriteClub(@PathVariable UUID exerciserUuid, @PathVariable UUID clubUuid) throws NotFoundException {
         clubService.removeFavoriteClub(exerciserUuid, clubUuid);
     }

@@ -40,7 +40,7 @@ public class ExerciserController {
     }
 
     @PutMapping(value = "/exerciser/{exerciserUuid}")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @exerciserSecurity.hasPermission(authentication,#exerciserUuid)")
     public void update(@PathVariable UUID exerciserUuid,
                        @ModelAttribute @Valid ExerciserUpdateModel exerciserUpdateModel) throws NotFoundException {
         exerciserService.update(exerciserUuid, exerciserUpdateModel);

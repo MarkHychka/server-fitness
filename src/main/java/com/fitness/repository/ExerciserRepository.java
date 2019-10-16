@@ -21,10 +21,11 @@ public class ExerciserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Exerciser> findByEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM exerciser WHERE email = ?",
+    public Exerciser findByEmail(String email) {
+        List<Exerciser> result = jdbcTemplate.query("SELECT * FROM exerciser WHERE email = ?",
                 new ExerciserRowMapper(),
                 email);
+        return result.get(0);
     }
 
     public void insert(String firstName, String lastName, String email, UUID uuid, Gender gender, String password,

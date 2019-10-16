@@ -29,26 +29,26 @@ public class WorkoutController {
     private WorkoutService workoutService;
 
     @PostMapping(value = "/exerciser/{exerciserUuid}/workout")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @exerciserSecurity.hasPermission(authentication,#exerciserUuid)")
     public void addWorkout(@PathVariable UUID exerciserUuid, @ModelAttribute WorkoutModel workoutModel) throws NotFoundException {
         workoutService.addWorkout(exerciserUuid, workoutModel);
     }
 
     @PutMapping(value = "/exerciser/{exerciserUuid}/workout/{workoutId}")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @workoutSecurity.hasPermission(authentication,#exerciserUuid,#workoutId)")
     public void updateWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId,
                               @ModelAttribute WorkoutModel workoutModel) throws NotFoundException {
         workoutService.updateWorkout(exerciserUuid, workoutId, workoutModel);
     }
 
     @DeleteMapping(value = "/exerciser/{exerciserUuid}/workout/{workoutId}")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @workoutSecurity.hasPermission(authentication,#exerciserUuid,#workoutId)")
     public void deleteWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long workoutId) throws NotFoundException {
         workoutService.deleteWorkout(exerciserUuid, workoutId);
     }
 
     @GetMapping(value = "/exerciser/{exerciserUuid}/workouts")
-    @PreAuthorize("hasRole('ROLE_EXERCISER')")
+    @PreAuthorize("hasRole('ROLE_EXERCISER') and @exerciserSecurity.hasPermission(authentication,#exerciserUuid)")
     public List<WorkoutDto> findExerciserWorkouts(@PathVariable UUID exerciserUuid) throws NotFoundException {
         return workoutService.findExerciserWorkouts(exerciserUuid);
     }

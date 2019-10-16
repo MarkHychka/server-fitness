@@ -44,7 +44,7 @@ public class ExerciserService {
     @Transactional
     public ExerciserDto signUp(ExerciserSignUpModel model) throws DuplicateException, NotFoundException {
         String email = model.getEmail();
-        if (!exerciserRepository.findByEmail(email).isEmpty()) {
+        if (exerciserRepository.findByEmail(email) != null) {
             throw new DuplicateException(String.format("Exerciser with email %s already exists", email));
         }
         UUID uuid = UUID.randomUUID();
@@ -82,13 +82,13 @@ public class ExerciserService {
     }
 
     @Transactional(readOnly = true)
-    public List<Exerciser> findByEmail(String email) {
+    public Exerciser findByEmail(String email) {
         return exerciserRepository.findByEmail(email);
     }
 
     @Transactional(readOnly = true)
     public ExerciserDto getExerciserProfile(String email) {
-        return transform(exerciserRepository.findByEmail(email).get(0));
+        return transform(exerciserRepository.findByEmail(email));
     }
 
     private ExerciserDto transform(ExerciserSignUpModel model, UUID uuid) {
