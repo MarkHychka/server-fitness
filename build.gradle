@@ -18,4 +18,5 @@ dependencies {
             [group: 'org.apache.commons', name: 'commons-lang3', version: '3.0']
     )
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }

@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS favorite_club;
 DROP TABLE IF EXISTS club;
 DROP TABLE IF EXISTS exerciser;
+DROP TABLE IF EXISTS goal;
 
 CREATE TABLE exerciser (
   id              BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -65,4 +66,21 @@ CREATE TABLE favorite_club (
     ON DELETE CASCADE,
   FOREIGN KEY club_id_fk (club_id) REFERENCES club (id)
     ON DELETE CASCADE
+);
+
+CREATE TABLE goal (
+  id           BIGINT PRIMARY KEY AUTO_INCREMENT,
+  uuid         varchar(36)                                                         not null,
+  exerciser_id bigint                                                              not null,
+  start_date   timestamp default '0000-00-00 00:00:00'                             not null,
+  end_date     timestamp default '0000-00-00 00:00:00'                             not null,
+  name         varchar(50)                                                         not null,
+  target       float                                                               not null,
+  goal_type    varchar(20)                                                         not null,
+  progress     float                                                               not null,
+  completed    boolean default false                                               not null,
+  created_at   timestamp default '0000-00-00 00:00:00'                             not null,
+  updated_at   timestamp default '0000-00-00 00:00:00'                             not null,
+  foreign key (exerciser_id) references exerciser (id)
+    on delete cascade
 );
