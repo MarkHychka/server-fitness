@@ -36,7 +36,6 @@ public class GoalService {
 
     @Transactional
     public void updateGoal(UUID exerciserUuid, Long goalId, GoalModel goalModel) throws NotFoundException {
-        exerciserService.findByUuid(exerciserUuid);
         Goal goal = goalRepository.findById(goalId);
         if (goal == null) {
             throw new NotFoundException(String.format("Goal with id %d not found", goalId));
@@ -48,7 +47,6 @@ public class GoalService {
 
     @Transactional
     public void deleteGoal(UUID exerciserUuid, Long goalId) throws NotFoundException {
-        exerciserService.findByUuid(exerciserUuid);
         Goal goal = goalRepository.findById(goalId);
         if (goal == null) {
             throw new NotFoundException(String.format("Goal with id %d not found", goalId));

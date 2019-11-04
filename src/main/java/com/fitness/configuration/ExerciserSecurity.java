@@ -14,7 +14,7 @@ public class ExerciserSecurity {
     ExerciserRepository exerciserRepository;
 
     public boolean hasPermission(Authentication authentication, UUID exerciserUuid) {
-        UUID uuid = exerciserRepository.findByEmail(authentication.getPrincipal().toString()).getUuid();
+        UUID uuid = exerciserRepository.findByEmail(authentication.getName()).getUuid();
         return uuid.equals(exerciserUuid);
     }
 }

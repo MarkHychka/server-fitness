@@ -19,14 +19,14 @@ public class GoalController {
 
     @PostMapping(value = "/exerciser/{exerciserUuid}/goal")
     @PreAuthorize("hasRole('ROLE_EXERCISER') and @exerciserSecurity.hasPermission(authentication,#exerciserUuid)")
-    public void addGoal(@PathVariable UUID exerciserUuid, @ModelAttribute GoalModel goalModel) throws NotFoundException {
+    public void addGoal(@PathVariable UUID exerciserUuid, @RequestBody GoalModel goalModel) throws NotFoundException {
         goalService.addGoal(exerciserUuid, goalModel);
     }
 
     @PutMapping(value = "/exerciser/{exerciserUuid}/goal/{goalId}")
     @PreAuthorize("hasRole('ROLE_EXERCISER') and @goalSecurity.hasPermission(authentication,#exerciserUuid,#goalId)")
     public void updateWorkout(@PathVariable UUID exerciserUuid, @PathVariable Long goalId,
-                              @ModelAttribute GoalModel goalModel) throws NotFoundException {
+                              @RequestBody GoalModel goalModel) throws NotFoundException {
         goalService.updateGoal(exerciserUuid, goalId, goalModel);
     }
 
